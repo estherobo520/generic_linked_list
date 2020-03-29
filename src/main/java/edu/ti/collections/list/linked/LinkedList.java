@@ -27,20 +27,21 @@ public class LinkedList<T> {
     }
 
     private Node head = null;
-
+    private Node endNode = null;
     public LinkedList() {
         // nothing
     }
 
     public LinkedList(T payload) {
         head = new Node(payload);
+        endNode = head;
     }
 
     public boolean isEmpty() {
         return (head == null);
     }
 
-    private Node end() {
+    Node end() {
         Node endNode = head;
         while (endNode.getNext() != null) {
             endNode = endNode.getNext();
@@ -59,16 +60,21 @@ public class LinkedList<T> {
     public void insert(T object) {
         Node newNode = new Node(object);
         newNode.setNext(head);
+        if (head == null) {
+            endNode = newNode;
+        }
         head = newNode;
     }
 
     public void append(T object) {
         Node newNode = new Node(object);
-        Node endNode = end();
+        //endNode = end();
         if (head == null) {
             head = newNode;
+            endNode = newNode;
         } else {
-            end().setNext(newNode);
+            endNode.setNext(newNode);
+            endNode = newNode;
         }
     }
 
@@ -99,6 +105,10 @@ public class LinkedList<T> {
                 head  = requestedNode.getNext();
             }
             requestedObject = requestedNode.getPayload();
+            if (requestedNode.getNext() == null)
+            {
+                endNode = beforeRequestedNode;
+            }
         }
         return requestedObject;
     }
@@ -124,6 +134,10 @@ public class LinkedList<T> {
                 head  = requestedNode.getNext();
             }
             requestedObject = requestedNode.getPayload();
+            if (requestedNode.getNext() == null)
+            {
+                endNode = beforeRequestedNode;
+            }
         }
         return requestedObject;
     }
